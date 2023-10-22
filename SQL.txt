@@ -1,0 +1,72 @@
+create database company;
+use company;
+
+create table Employee_Details(Emp_id integer primary key not null, Full_Name varchar(20),Manager_Id integer, Date_of_Joined date);
+
+insert into Employee_Details 
+values(121,'Kasun Perera',321,'2014-01-31'),
+      (321,'Gayan Withana',986,'2010-08-10'),
+	  (421,'Nadee Fernando',876,'2013-07-31');
+
+create table Employee_Salary(Emp_id integer , Project_Id varchar(20),Salary float);
+
+insert into Employee_Salary
+values(121,'P1',8000),
+      (321,'P2',1000),
+	  (421,'P3',12000);
+
+alter table Employee_Salary
+add constraint Employee_Salary_fk foreign key (Emp_id) references Employee_Details(Emp_id);
+
+
+----------------Question
+
+--1)Write a SQL query to fetch employee names having salary greater than or equal to 5000 and less than or equal 10000. 
+
+   select Full_Name from Employee_Details where Emp_id in (select Emp_id from Employee_salary where Salary between 5000 and 10000);
+                                                           --SubQuery
+
+--2)Write a SQL query to fetch employee names and salary records. Return employee details even if the salary record is not present for the employee.
+
+
+     select Employee_Details.Full_Name,Employee_Salary.Salary from Employee_Details left outer join Employee_Salary on Employee_Details.Emp_id=Employee_Salary.Emp_id
+
+
+--3) Write a SQL query to fetch all the Employees who are also managers from Employee Details table. 
+
+
+  select Employee_Details.Full_Name from Employee_Details inner join Employee_Salary on Employee_Details.Emp_id=Employee_Details.Manager_id;
+  
+  select Full_Name from Employee_Details where Emp_id = Manager_id 
+
+--4)Write a SQL query to fetch project-wise count of employees sorted by project's count in descending order.
+
+   select project_id, count(Emp_id) EmpProjectCount
+   from Employee_Salary
+   group by project_Id
+
+   order by EmpProjectCount desc;
+
+
+  -- select column_name , aggregationfunction as Meaningfull_nameFortheAggregationfunction
+  -- from table_name
+  -- group by column_name 
+
+
+
+  -- Group by = group it from based on 
+
+
+
+
+
+   select count(Emp_id) from Employee_Salary
+ 
+
+select * from Employee_Details;
+select * from Employee_Salary;
+
+
+drop table Employee_Salary;
+
+
